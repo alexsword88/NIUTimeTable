@@ -124,8 +124,15 @@ def table_capture():
                     while len(driver.window_handles)<2:
                         time.sleep(0.5)
                     driver.switch_to.window(driver.window_handles[1])
-                    driver.switch_to.frame(driver.find_element_by_css_selector("#topFrame frameset[name=downFrame] #rightFrame #pageFrame frame[name=mainFrame]"))
-                    time.sleep(0.5)
+                    while True:
+                        driver.switch_to.frame(driver.find_element_by_css_selector("#topFrame frameset[name=downFrame] #rightFrame #pageFrame frame[name=mainFrame]"))
+                        time.sleep(0.5)
+                        try:
+                            driver.find_element_by_css_selector(".welcome table")
+                        except (NoSuchElementException,WebDriverException) as error:
+                            print(error)
+                            continue
+                        break
                     place_n_time.append(driver.page_source)
                     driver.close()
                     time.sleep(0.5)
